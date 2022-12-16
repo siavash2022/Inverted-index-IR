@@ -10,11 +10,11 @@ nltk.download('punkt')
 doc_list = []
 
 # reading the docs
-doc1 = open(r'C:\Users\asus\Desktop\mabani\inverted_index_proj\doc1.txt', encoding='utf8')
+doc1 = open(r'C:\Users\asus\Desktop\Inverted-index-IR\doc1.txt', encoding='utf8')
 doc1 = doc1.read()
 
 
-doc2 = open(r'C:\Users\asus\Desktop\mabani\inverted_index_proj\doc2.txt', encoding='utf8')
+doc2 = open(r'C:\Users\asus\Desktop\Inverted-index-IR\doc2.txt', encoding='utf8')
 doc2 = doc2.read()
 
 # add the docs to the doc_list
@@ -65,4 +65,22 @@ for doc in tokenized_docs_list_no_sw:
 
 # sorts the inverted index
 inverted_index_dict = {key: value for key, value in sorted(inverted_index_dict.items())}
-print(inverted_index_dict["terms"])
+
+
+num = 90
+
+while(num !=0):
+    print("""
+    0)exit \n
+    1) search for a word
+    """)
+
+    num = int(input("enter a number:"))
+
+    if num == 1:
+        input_word = str(input("enter a word:")).lower().strip()
+
+        if input_word in inverted_index_dict:
+            print(inverted_index_dict[input_word])
+        else:
+            print('no result found')
