@@ -1,3 +1,19 @@
+"""
+برای ران شدن پروژه برای بار اول باید به اینترنت متصل باشد
+به دلیل این دو خط کد
+nltk.download('stopwords')
+nltk.download('punkt')
+
+و محیط مجازی هم باید ساخته شود
+پکیج های محیط مجازی در
+requirments.txt
+موجود میباشند
+
+برای راحتی کار شما محیط مجازی نیز ساخته شده
+ولی ممکن است روی کامپیوتر شما به دلیل متفاوت بودن مسیر پایتون و یا ورژن پایتون شما ران نشود
+پس پیشنهاد میشود محیط مجازی ساخته شود
+"""
+
 from module_inverted_index import remove_punc_and_lower_case
 import pathlib
 from nltk.tokenize import word_tokenize
@@ -6,22 +22,21 @@ from nltk.corpus import stopwords
 nltk.download('stopwords')
 nltk.download('punkt')
 
-# takes the current folder path
-current_path = str(pathlib.Path().cwd())
-
 
 # list of documents
 doc_list = []
 
-doc1_path = current_path + "\\" +"doc1.txt"
+# takes the current folder path
+current_path = str(pathlib.Path().cwd())
+
 
 # reading the docs
+
+doc1_path = current_path + "\\" +"doc1.txt"
 doc1 = open(doc1_path, encoding='utf8')
 doc1 = doc1.read()
 
-
 doc2_path = current_path + "\\" +"doc2.txt"
-
 doc2 = open(doc2_path, encoding='utf8')
 doc2 = doc2.read()
 
@@ -77,12 +92,30 @@ inverted_index_dict = {key: value for key, value in sorted(inverted_index_dict.i
 
 print(inverted_index_dict)
 
+
+def common_items(list1,list2)->list:
+    """ finds the common items between two lists and returns the result in a list """
+    return list(set(list1).intersection(list2))
+
+
+def union_list(list1,list2)->list:
+    """ unions 2 lists and returns the result in a list """
+    return list(sorted(set(list1 + list2)))
+
+
+def subtraction_list(list1,list2)->list:
+    """ substracts 2 lists and returns the result in a list """
+    return list(set(list1) - set(list2))
+
 num = 90
 
 while(num !=0):
     print("""
     0)exit \n
     1) search for a word
+    2) AND
+    3) OR
+    4) NOT
     """)
 
     num = int(input(" choose an option:"))
@@ -93,5 +126,42 @@ while(num !=0):
         if input_word in inverted_index_dict:
             print("the enterd word was found in docs with the following number(s):")
             print(inverted_index_dict[input_word])
+        else:
+            print('no result found')
+
+    elif num == 2:
+        input_word1 = str(input("enter the first word:")).lower().strip()
+        input_word2 = str(input("enter the second word:")).lower().strip()
+
+        if input_word1 in inverted_index_dict and input_word2 in inverted_index_dict :
+            print("the enterd words were found in docs with the following number(s):")
+            print(common_items(inverted_index_dict[input_word1],inverted_index_dict[input_word2]))
+        else:
+            print('no result found')
+
+    elif num == 3:
+        input_word1 = str(input("enter the first word:")).lower().strip()
+        input_word2 = str(input("enter the second word:")).lower().strip()
+
+        if input_word1 in inverted_index_dict and input_word2 in inverted_index_dict :
+            print("the enterd words were found in docs with the following number(s):")
+            print(union_list(inverted_index_dict[input_word1],inverted_index_dict[input_word2]))
+
+        elif input_word1 in inverted_index_dict:
+            print("the enterd words were found in docs with the following number(s):")
+            print(inverted_index_dict[input_word1])
+
+        elif input_word2 in inverted_index_dict:
+            print("the enterd words were found in docs with the following number(s):")
+            print(inverted_index_dict[input_word2])
+
+    elif num == 4:
+        input_word1 = str(input("enter the first word:")).lower().strip()
+        input_word2 = str(input("enter the second word:")).lower().strip()
+
+        if input_word1 in inverted_index_dict and input_word2 in inverted_index_dict :
+            print("the enterd words were found in docs with the following number(s):")
+            print(subtraction_list(inverted_index_dict[input_word1],inverted_index_dict[input_word2]))
+
         else:
             print('no result found')
